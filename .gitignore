@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+backend/app/static/*
+!backend/app/static/.gitkeep
+web/node_modules/
+web/dist/
+data/
+stacks/
+*.db
+*.log
+.pytest_cache/
+参考资料/
+.key
+dockerAPI_key/

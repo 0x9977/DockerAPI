@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dockerapi-backend"
+version = "1.0.0"
+description = "DockerAPI - Docker management panel & API"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "docker>=7.1",
+    "sqlalchemy>=2.0",
+    "bcrypt>=4.1",
+    "pyjwt>=2.8",
+    "loguru>=0.7",
+    "sse-starlette>=2.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-asyncio>=0.23", "httpx>=0.27"]
+
+[tool.setuptools]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

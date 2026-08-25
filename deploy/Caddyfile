@@ -1,0 +1,6 @@
+# 可选 HTTPS 反代模板(内网部署默认不需要,见 docs/deployment.md)
+# 用法: 安装 Caddy 后替换域名并重载;SSE 流式响应 Caddy 默认支持
+
+dockerapi.example.com {
+    reverse_proxy 127.0.0.1:8000
+}
