@@ -1,0 +1,37 @@
+# DockerAPI 部署配置(拉取现成镜像)
+# 使用: 前置两步
+#   1. mkdir -p /opt/stacks        # compose 栈目录(要部署的服务放这里)
+#   2. 修改下方 group_add 为宿主机 docker 组 GID: getent group docker | cut -d: -f3
+# 然后: docker compose up -d
+# 访问: http://<主机IP>:8000 (首次进入引导页创建管理员)
+
+services:
+  dockerapi:
+    image: ghcr.io/0x9977/dockerapi:latest
+    # 想从源码构建: 注释掉 image,放开下面两行
+    # build:
+    #   context: .
+    #   dockerfile: deploy/Dockerfile
+    container_name: dockerapi
+    restart: unless-stopped
+    ports:
+      - "8000:8000" # 内网访问;如需仅本机: "127.0.0.1:8000:8000"
+    group_add:
+      - "999" # ← 改成宿主机 docker 组 GID(每台机器不同,见文件头说明)
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # 管理宿主 Docker
+      - /opt/stacks:/opt/stacks # compose 栈文件(路径内外保持一致)
+      - dockerapi-data:/data # 账号/API Key/审计持久化
+    environment:
+      TZ: Asia/Shanghai
+      DATA_DIR: /data
+      STACKS_DIR: /opt/stacks
+      # DOCKER_HOST: unix:///var/run/docker.sock  # 默认
+      # COMPOSE_JOB_TIMEOUT: "1800"
+      # AUDIT_RETENTION_DAYS: "90"
+
+volumes:
+  dockerapi-data:
